@@ -104,5 +104,14 @@ public class TeamsController {
          return members;
     }
 
+    @RequestMapping(value = "/get/message", method = RequestMethod.GET)
+    @ResponseBody
+    public String getMessageFromTeam(){
+        ChatMessage chatMessage = graphClient.teams("{group-id-for-teams}").channels("{channel-id}").messages("{message-id}")
+                .buildRequest()
+                .get();
+        return  chatMessage.body.toString();
+    }
+
 
 }
