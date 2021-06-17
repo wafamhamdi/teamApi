@@ -6,6 +6,8 @@ import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
 import com.microsoft.graph.models.*;
 import com.microsoft.graph.requests.GraphServiceClient;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -37,8 +39,8 @@ public class TeamsController {
 
     final User me = graphClient.me().buildRequest().get();
 
-
-public void sendMessage() {
+    @RequestMapping(value = "/send/message", method = RequestMethod.POST)
+    public void sendMessage() {
         Message message = new Message();
         message.subject = "Meet for lunch?";
         ItemBody body = new ItemBody();
@@ -65,5 +67,28 @@ public void sendMessage() {
                 .post();
 
     }
+    //send message to specific channel
+    public void sendMessageToChannel(){
+        ChatMessage chatMessage = new ChatMessage();
+        ItemBody body = new ItemBody();
+        body.content = "Hello RTLADCONNECT";
+        chatMessage.body = body;
+
+        graphClient.teams("{team-id}").channels("{channel-id}").messages()
+                .buildRequest()
+                .post(chatMessage);
+    }
+    //create new channel
+     public void createChannel(){
+         Channel channel = new Channel();
+         channel.displayName = "RTL Discussion";
+         channel.description = "This channel is where we make plans";
+
+         graphClient.teams("{team-id}").channels()
+                 .buildRequest()
+                 .post(channel);
+     }
+
+
 
 }
