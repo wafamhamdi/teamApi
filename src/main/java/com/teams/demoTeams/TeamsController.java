@@ -9,6 +9,7 @@ import com.microsoft.graph.requests.GraphServiceClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -69,6 +70,8 @@ public class TeamsController {
 
     }
     //send message to specific channel
+    @RequestMapping(value = "/send/message", method = RequestMethod.POST)
+    @ResponseBody
     public void sendMessageToChannel(){
         ChatMessage chatMessage = new ChatMessage();
         ItemBody body = new ItemBody();
@@ -80,6 +83,8 @@ public class TeamsController {
                 .post(chatMessage);
     }
     //create new channel
+    @RequestMapping(value = "/create/channel", method = RequestMethod.POST)
+    @ResponseBody
      public void createChannel(){
          Channel channel = new Channel();
          channel.displayName = "RTL Discussion";
@@ -90,10 +95,13 @@ public class TeamsController {
                  .post(channel);
      }
     // get team members
-    public void getTeamMembers(){
-        DirectoryObjectCollectionWithReferencesPage members = graphClient.groups("{group-id-for-teams}").members()
+    @RequestMapping(value = "/team/members", method = RequestMethod.GET)
+    @ResponseBody
+    public  DirectoryObjectCollectionWithReferencesPage getTeamMembers(){
+         DirectoryObjectCollectionWithReferencesPage members = graphClient.groups("{group-id-for-teams}").members()
                 .buildRequest()
                 .get();
+         return members;
     }
 
 
