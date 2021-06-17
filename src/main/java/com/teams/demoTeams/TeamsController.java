@@ -4,6 +4,7 @@ import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
 import com.microsoft.graph.models.*;
+import com.microsoft.graph.requests.DirectoryObjectCollectionWithReferencesPage;
 import com.microsoft.graph.requests.GraphServiceClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,7 +72,7 @@ public class TeamsController {
     public void sendMessageToChannel(){
         ChatMessage chatMessage = new ChatMessage();
         ItemBody body = new ItemBody();
-        body.content = "Hello RTLADCONNECT";
+        body.content = "Hello RTLAdConnect";
         chatMessage.body = body;
 
         graphClient.teams("{team-id}").channels("{channel-id}").messages()
@@ -88,7 +89,12 @@ public class TeamsController {
                  .buildRequest()
                  .post(channel);
      }
-
+    // get team members
+    public void getTeamMembers(){
+        DirectoryObjectCollectionWithReferencesPage members = graphClient.groups("{group-id-for-teams}").members()
+                .buildRequest()
+                .get();
+    }
 
 
 }
