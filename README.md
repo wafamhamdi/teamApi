@@ -1,0 +1,2 @@
+# teamApi
+mvn install -DskipTests
