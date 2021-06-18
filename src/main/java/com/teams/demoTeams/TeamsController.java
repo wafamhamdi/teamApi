@@ -6,6 +6,7 @@ import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
 import com.microsoft.graph.models.*;
 import com.microsoft.graph.requests.DirectoryObjectCollectionWithReferencesPage;
 import com.microsoft.graph.requests.GraphServiceClient;
+import com.microsoft.graph.requests.TeamsTabCollectionPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -112,6 +113,14 @@ public class TeamsController {
                 .get();
         return  chatMessage.body.toString();
     }
-
-
+ //tabs in channel
+ @RequestMapping(value = "/tabs/message", method = RequestMethod.GET)
+ @ResponseBody
+ public String tabsInChannel() {
+     TeamsTabCollectionPage tabs = graphClient.teams("{team-id}").channels("{channel-id}").tabs()
+             .buildRequest()
+             .expand("teamsApp")
+             .get();
+     return tabs.toString()
+ }
 }
